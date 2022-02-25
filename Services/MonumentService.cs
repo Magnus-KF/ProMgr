@@ -29,6 +29,11 @@ public class MonumentService
         .AsNoTracking()
         .SingleOrDefault(p => p.Id == id);
     }
+    public Story? GetStoryById(int storyId)
+    {
+        return _context.Stories
+        .SingleOrDefault(p => p.StoryId == storyId);
+    }
      public Monument? Create(int id, string name)
     {   
         
@@ -120,6 +125,17 @@ public class MonumentService
         if (epicToDelete is not null)
     {
             _context.Epics.Remove(epicToDelete);
+            _context.SaveChanges();
+
+    }
+    }
+
+    public void DeleteStory(int taskId)
+    {   
+        var storyToDelete = _context.Stories.Find(taskId);
+        if (storyToDelete is not null)
+    {
+            _context.Stories.Remove(storyToDelete);
             _context.SaveChanges();
 
     }

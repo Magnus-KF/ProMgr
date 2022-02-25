@@ -63,6 +63,7 @@ public class MonumentController : ControllerBase
     [HttpPut("{id}/addstory")]
     public IActionResult Addstory(int id, int epicId, int storyId, string name)
     {
+        //if epic not in monument.Epics -> Break
         var monumentToUpdate = _service.GetById(id);
         if(monumentToUpdate is not null) {
             _service.AddStory(id, epicId, storyId, name);
@@ -124,8 +125,19 @@ public class MonumentController : ControllerBase
 
     }
     [HttpDelete("{id}/deletestory")]
-    public IActionResult DeleteStory(int id, int epicid, int storyid)
+    public IActionResult DeleteStory(int storyId)
     {
-       throw new NotImplementedException();
+        //sjekk om monument.epics.stories er legit
+        var story = _service.GetStoryById(storyId);
+
+        if(story is not null)
+        {
+            _service.DeleteStory(storyId);
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
     }
 }
