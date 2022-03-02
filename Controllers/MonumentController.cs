@@ -57,20 +57,22 @@ public class MonumentController : ControllerBase
             return NoContent();
         }            
         else {
-            return NotFound();
+            throw new NullReferenceException("Monument finnes ikkje");
         }
     }
     [HttpPut("{id}/addstory")]
     public IActionResult Addstory(int id, int epicId, int storyId, string name)
     {
-        //if epic not in monument.Epics -> Break
+        //if epic not in monument.Epics -> Break (service)
         var monumentToUpdate = _service.GetById(id);
-        if(monumentToUpdate is not null) {
+        var epicToUpdate = _service.GetEpicById(epicId);
+        
+        if(monumentToUpdate is not null || epicToUpdate is not null) {
             _service.AddStory(id, epicId, storyId, name);
             return NoContent();
         }            
         else {
-            return NotFound();
+            throw new NullReferenceException("Monument eller epic finenes ikkje");
         }
     }
 
@@ -78,12 +80,13 @@ public class MonumentController : ControllerBase
     public IActionResult Update(int id, string name, string description, string proman)
     {
         var monumentToUpdate = _service.GetById(id);
+        //Unødvendig(?) nullsjekk her
         if(monumentToUpdate is not null) {
             _service.Update(id, name, description, proman);
             return NoContent();
         }            
         else {
-            return NotFound();
+            throw new NullReferenceException("Monument finens ikkje");
         }
     }
     [HttpPut("{id}/updatestory")]
@@ -116,7 +119,7 @@ public class MonumentController : ControllerBase
             return NotFound();
         }
     }
-     [HttpDelete("{id}/deleteepic")]
+     [HttpDelete("deleteepic")]
     public IActionResult DeleteEpic(int epicId)
     {
 
@@ -124,7 +127,7 @@ public class MonumentController : ControllerBase
         return Ok();
 
     }
-    [HttpDelete("{id}/deletestory")]
+    [HttpDelete("deletestory")]
     public IActionResult DeleteStory(int storyId)
     {
         //sjekk om monument.epics.stories er legit

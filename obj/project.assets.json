@@ -1326,19 +1326,19 @@
     ]
   },
   "packageFolders": {
-    "/home/matey/.nuget/packages/": {}
+    "/home/magnus/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/matey/ProMgr/ProMgr.csproj",
+      "projectUniqueName": "/home/magnus/Github/ProMgr/ProMgr.csproj",
       "projectName": "ProMgr",
-      "projectPath": "/home/matey/ProMgr/ProMgr.csproj",
-      "packagesPath": "/home/matey/.nuget/packages/",
-      "outputPath": "/home/matey/ProMgr/obj/",
+      "projectPath": "/home/magnus/Github/ProMgr/ProMgr.csproj",
+      "packagesPath": "/home/magnus/.nuget/packages/",
+      "outputPath": "/home/magnus/Github/ProMgr/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/matey/.nuget/NuGet/NuGet.Config"
+        "/home/magnus/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"

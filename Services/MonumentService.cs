@@ -34,21 +34,20 @@ public class MonumentService
         return _context.Stories
         .SingleOrDefault(p => p.StoryId == storyId);
     }
+    public Epic? GetEpicById(int epicId)
+    {
+        return _context.Epics
+        .SingleOrDefault(p => p.EpicId == epicId);
+    }
      public Monument? Create(int id, string name)
     {   
         
         Monument newMonument = new Monument {Id = id, Name = name};
         _context.Monuments.Add(newMonument);
-        //_context.Monuments.Add(newMonument);
         _context.SaveChanges();
         return newMonument;
     }
-    /*  public Monument? Create(Monument newMonument)
-    {
-        _context.Monuments.Add(newMonument);
-        _context.SaveChanges();
-        return newMonument;
-    } */
+
      public void AddEpic(int id, int epicId, string name)
     {
         var monumentToUpdate = _context.Monuments.Find(id);
@@ -57,7 +56,7 @@ public class MonumentService
             monumentToUpdate.Epics = new List<Epic>();
         }
         Epic newEpic = new Epic {EpicId = epicId, Name = name, Monument = monumentToUpdate };
-        _context.Epics.Add(newEpic);
+        _context.Epics.Add(newEpic); //Unødvendig?
         monumentToUpdate.Epics.Add(newEpic);
         _context.Monuments.Update(monumentToUpdate);
         _context.SaveChanges();
@@ -66,32 +65,51 @@ public class MonumentService
      public void Update(int id, string name, string description, string proman)
     {
         var monumentToUpdate = _context.Monuments.Find(id);
-        monumentToUpdate.Name = name;
-        monumentToUpdate.Description = description;
-        monumentToUpdate.ProjectManager = proman;
-        _context.Monuments.Update(monumentToUpdate);
-        _context.SaveChanges();
+        if (monumentToUpdate is not null) {
+            monumentToUpdate.Name = name;
+            monumentToUpdate.Description = description;
+            monumentToUpdate.ProjectManager = proman;
+            _context.Monuments.Update(monumentToUpdate);
+            _context.SaveChanges();
+        }
+        else {
+            throw new NullReferenceException("Monument finens ikkje");
+        }
 
     }
      public void UpdateEpic(int id, int epicid, string name, string description, string misc)
     {
         var epicToUpdate = _context.Epics.Find(epicid);
-        epicToUpdate.Name = name;
-        epicToUpdate.Description = description;
-        epicToUpdate.Misc = misc;
-        _context.Epics.Update(epicToUpdate);
-        _context.SaveChanges();
+        if (epicToUpdate is not null) {
+            epicToUpdate.Name = name;
+            epicToUpdate.Description = description;
+            epicToUpdate.Misc = misc;
+            _context.Epics.Update(epicToUpdate);
+            _context.SaveChanges();
+
+        }
+        else {
+            throw new NullReferenceException("Epic finnes ikkje");
+
+        }
+
 
     }
      public void UpdateStory(int storyid, string name, string description, string responsible, string misc)
     {
         var storyToUpdate = _context.Stories.Find(storyid);
-        storyToUpdate.Name = name;
-        storyToUpdate.Description = description;
-        storyToUpdate.Misc = misc;
-        storyToUpdate.Responisble = responsible;
-        _context.Stories.Update(storyToUpdate);
-        _context.SaveChanges();
+        if (storyToUpdate is not null) {
+            storyToUpdate.Name = name;
+            storyToUpdate.Description = description;
+            storyToUpdate.Misc = misc;
+            storyToUpdate.Responisble = responsible;
+            _context.Stories.Update(storyToUpdate);
+            _context.SaveChanges();
+
+        }
+        else {
+            throw new NullReferenceException("Story finens ikkje");
+        }
 
     }
      public void AddStory(int id, int epicId, int storyId, string name)
@@ -121,6 +139,7 @@ public class MonumentService
 
     public void DeleteEpic(int epicId)
     {
+        // if epic not in M.epics => error
         var epicToDelete = _context.Epics.Find(epicId);
         if (epicToDelete is not null)
     {
@@ -141,12 +160,4 @@ public class MonumentService
     }
     }
 
- /*    public static void Update(Monument monument)
-    {
-        var index = Monuments.FindIndex(p => p.Id == monument.Id);
-        if(index == -1)
-            return;
-
-        Monuments[index] = monument;
-    } */
 }
